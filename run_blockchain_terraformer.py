@@ -1211,9 +1211,12 @@ def terraform_blockchain(network_name: str, web3: Web3 = None, start_block: int 
             if fee == "TBD":
                 continue
             add_to_exchange_ids(exchange=exchange_name, fork=fork)
-            factory_contract = web3.eth.contract(
-                address=address, abi=SOLIDLY_FACTORY_ABI_V2
-            )
+
+            factory_contract = factory_contract = web3.eth.contract(
+                    address=address, abi=SOLIDLY_FACTORY_ABI_VELOCIMETER
+                ) if "velocimeter" in exchange_name else web3.eth.contract(
+                    address=address, abi=SOLIDLY_FACTORY_ABI_V2
+                )
 
             u_df, m_df = get_solidly_v2_pools(
                 token_addr_lookup=token_addr_lookup,

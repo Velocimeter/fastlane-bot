@@ -760,6 +760,7 @@ class BaseManager:
             "uniswap_v3",
             "pancakeswap_v2",
             "pancakeswap_v3",
+            "solidly_v2",
         }:
             return "address", addr
         if ex_name == "bancor_v2":

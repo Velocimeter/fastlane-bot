@@ -326,6 +326,9 @@ class PoolManager(BaseManager):
         if ex_name in self.cfg.UNI_V2_FORKS:
             ex_name = "uniswap_v2"
 
+        if ex_name in self.cfg.SOLIDLY_V2_FORKS:
+            ex_name = "solidly_v2"
+
         if key == "address":
             key_value = self.web3.toChecksumAddress(key_value)
 
