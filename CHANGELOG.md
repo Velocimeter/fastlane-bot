@@ -2,9 +2,57 @@
 
 ## [Unreleased](https://github.com/bancorprotocol/fastlane-bot/tree/HEAD)
 
-[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v2.7.82...HEAD)
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.3...HEAD)
+
+- minor spelling issue txhelpers \(coinbase\_bse\) [\#269](https://github.com/bancorprotocol/fastlane-bot/issues/269)
+- Bug in POL Mode & Carbon Curve creation [\#266](https://github.com/bancorprotocol/fastlane-bot/issues/266)
+- Update txhelpers.py [\#270](https://github.com/bancorprotocol/fastlane-bot/pull/270) ([NIXBNT](https://github.com/NIXBNT))
+
+## [v3.0.3](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.3) (2023-12-21)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.2...v3.0.3)
+
+- Minor bugs in Bot V3 [\#264](https://github.com/bancorprotocol/fastlane-bot/issues/264)
+- Remove token key in POL mode & add try/except for Carbon curve creation [\#267](https://github.com/bancorprotocol/fastlane-bot/pull/267) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+## [v3.0.2](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.2) (2023-12-20)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.1...v3.0.2)
+
+- Fixes to Multichain addresses & static data for Base, Polygon, and Arbitrum [\#265](https://github.com/bancorprotocol/fastlane-bot/pull/265) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+- Add support for trades without Flashloans [\#200](https://github.com/bancorprotocol/fastlane-bot/issues/200)
+
+## [v3.0.1](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.1) (2023-12-19)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v2.7.83...v3.0.1)
 
 - Fix error caused in poolandtokens for Bancor POL curves [\#254](https://github.com/bancorprotocol/fastlane-bot/issues/254)
+- bugfix for missing pool data [\#178](https://github.com/bancorprotocol/fastlane-bot/issues/178)
+- Bug in utils.py update\_pools\_from\_contracts [\#125](https://github.com/bancorprotocol/fastlane-bot/issues/125)
+- Incorrect address field for bancor\_v3 in static\_pool\_data.csv [\#118](https://github.com/bancorprotocol/fastlane-bot/issues/118)
+
+- Remove disabled pools from Bancor V3 static data [\#151](https://github.com/bancorprotocol/fastlane-bot/issues/151)
+- Change tx submit directly to flashbots \(instead of Alchemy\) [\#106](https://github.com/bancorprotocol/fastlane-bot/issues/106)
+- Add Target Token Mode for Recent Events [\#98](https://github.com/bancorprotocol/fastlane-bot/issues/98)
+- Add Support for Curve Exchange [\#75](https://github.com/bancorprotocol/fastlane-bot/issues/75)
+- Generalize `b3_two_hop` to allow handling arbs between external exchanges only. [\#73](https://github.com/bancorprotocol/fastlane-bot/issues/73)
+- Consolidate DEFAULT\_MIN\_PROFIT\_BNT and DEFAULT\_MIN\_PROFIT variables [\#59](https://github.com/bancorprotocol/fastlane-bot/issues/59)
+- Add Support for Bancor V3 Vortex Trigger [\#44](https://github.com/bancorprotocol/fastlane-bot/issues/44)
+- Refactor Code to Prevent Silent Failure of Exceptions [\#39](https://github.com/bancorprotocol/fastlane-bot/issues/39)
+- Bot 3.0 [\#262](https://github.com/bancorprotocol/fastlane-bot/pull/262) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+Closed issues
+
+- Error writing pool data to disk: Object of type int64 is not JSON serializable [\#259](https://github.com/bancorprotocol/fastlane-bot/issues/259)
+- main.py / env [\#104](https://github.com/bancorprotocol/fastlane-bot/issues/104)
+- Version number via CLI [\#23](https://github.com/bancorprotocol/fastlane-bot/issues/23)
+- Transaction is stuck in mempool [\#5](https://github.com/bancorprotocol/fastlane-bot/issues/5)
+
+## [v2.7.83](https://github.com/bancorprotocol/fastlane-bot/tree/v2.7.83) (2023-12-12)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v2.7.82...v2.7.83)
+
 - Issue causing transactions to be submitted without Flashbots by default [\#251](https://github.com/bancorprotocol/fastlane-bot/issues/251)
 - update LYXe token info [\#241](https://github.com/bancorprotocol/fastlane-bot/issues/241)
 - Bancor POL fix for poolandtokens [\#255](https://github.com/bancorprotocol/fastlane-bot/pull/255) ([Lesigh-3100](https://github.com/Lesigh-3100))
