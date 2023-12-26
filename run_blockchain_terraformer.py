@@ -20,6 +20,7 @@ POLYGON_ZKEVM = "polygon_zkevm"
 ARBITRUM_ONE = "arbitrum_one"
 OPTIMISM = "optimism"
 BASE = "coinbase_base"
+FANTOM = "fantom"
 
 BLOCK_CHUNK_SIZE_MAP = {
     "ethereum": 50000,
@@ -28,6 +29,7 @@ BLOCK_CHUNK_SIZE_MAP = {
     "arbitrum_one": 500000,
     "optimism": 500000,
     "coinbase_base": 250000,
+    "fantom": 10000
 }
 
 ALCHEMY_KEY_DICT = {
@@ -37,6 +39,7 @@ ALCHEMY_KEY_DICT = {
     "arbitrum_one": "WEB3_ALCHEMY_ARBITRUM",
     "optimism": "WEB3_ALCHEMY_OPTIMISM",
     "coinbase_base": "WEB3_ALCHEMY_BASE",
+    "fantom": "WEB3_FANTOM"
 }
 
 ALCHEMY_RPC_LIST = {
@@ -46,6 +49,7 @@ ALCHEMY_RPC_LIST = {
     "arbitrum_one": "https://arb-mainnet.g.alchemy.com/v2/",
     "optimism": "https://opt-mainnet.g.alchemy.com/v2/",
     "coinbase_base": "https://base-mainnet.g.alchemy.com/v2/",
+    "fantom": ""
 }
 
 BALANCER_SUBGRAPH_CHAIN_URL = {
@@ -174,6 +178,7 @@ def get_all_token_details(web3: Web3, network: str, write_path: str) -> TokenMan
         "arbitrum_one": "arbitrum-one",
         "optimism": "optimistic-ethereum",
         "avalanche": "avalanche",
+        "fantom": "fantom"
     }
     token_path = os.path.join(write_path, "tokens.csv")
     token_file_exists = os.path.exists(token_path)
@@ -1259,4 +1264,4 @@ def terraform_blockchain(network_name: str, web3: Web3 = None, start_block: int 
     return univ2_mapdf, univ3_mapdf
 
 
-#terraform_blockchain(network_name="coinbase_base", save_tokens=True)
+terraform_blockchain(network_name="fantom", save_tokens=True)

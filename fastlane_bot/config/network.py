@@ -288,6 +288,7 @@ class ConfigNetwork(ConfigBase):
     NETWORK_POLYGON = S.NETWORK_POLYGON
     NETWORK_POLYGON_ZKEVM = S.NETWORK_POLYGON_ZKEVM
     NETWORK_OPTIMISM = S.NETWORK_OPTIMISM
+    NETWORK_FANTOM = S.NETWORK_FANTOM
 
     # FLAGS
     #######################################################################################
@@ -314,6 +315,8 @@ class ConfigNetwork(ConfigBase):
             return _ConfigNetworkOptimism(_direct=False)
         elif network == cls.NETWORK_TENDERLY:
             return _ConfigNetworkTenderly(_direct=False)
+        elif network == cls.NETWORK_FANTOM:
+            return _ConfigNetworkFantom(_direct=False)
         else:
             raise ValueError(f"Invalid network: {network}")
 
@@ -601,6 +604,40 @@ class _ConfigNetworkBase(ConfigNetwork):
     }
     # Add any exchanges unique to the chain here
     CHAIN_SPECIFIC_EXCHANGES = []
+
+class _ConfigNetworkFantom(ConfigNetwork):
+    """
+    Fastlane bot config -- network [Fantom]
+    """
+
+    NETWORK_ID = "250"
+    NETWORK_NAME = "fantom"
+    RPC_ENDPOINT = os.environ.get("WEB3_FANTOM")
+
+    network_df = get_multichain_addresses(network="fantom")
+    FASTLANE_CONTRACT_ADDRESS = "0x418Cf3B67F1bF7ffe3eA0B58cEfb98c7a7C86f47"
+    MULTICALL_CONTRACT_ADDRESS = "0xcA11bde05977b3631167028862bE2a173976CA11"
+
+    CARBON_CONTROLLER_ADDRESS = (
+        GRAPHENE_CONTROLLER_ADDRESS
+    ) = "0xf37102e11E06276ac9D393277BD7b63b3393b361"
+    CARBON_CONTROLLER_VOUCHER = (
+        GRAPHENE_CONTROLLER_VOUCHER
+    ) = "0xf779D71178d96b5151D25DE608ac2Ab0558F6aA2"
+
+    NATIVE_GAS_TOKEN_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    WRAPPED_GAS_TOKEN_ADDRESS = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"
+    NATIVE_GAS_TOKEN_SYMBOL = "FTM"
+    WRAPPED_GAS_TOKEN_SYMBOL = "WFTM"
+    STABLECOIN_ADDRESS = "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4"
+
+    # Balancer
+    BALANCER_VAULT_ADDRESS = "0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce"
+
+    CHAIN_FLASHLOAN_TOKENS = {
+        "WFTM-4C83": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+        "axlUSDC-34a4": "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4",
+    }
 
 
 class _ConfigNetworkTenderly(ConfigNetwork):
