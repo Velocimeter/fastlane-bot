@@ -102,7 +102,7 @@ load_dotenv()
 )
 @click.option(
     "--flashloan_tokens",
-    default=f"{T.LINK},{T.ETH},{T.BNT},{T.WBTC}",
+    default=f"{T.BASE_WETH},{T.BASE_USDC}",
     type=str,
     help="The --flashloan_tokens flag refers to those token denominations which the bot can take a flash loan in. By "
     "default, these are [WETH, DAI, USDC, USDT, WBTC, BNT, NATIVE_ETH]. If you override the default to TKN, "
