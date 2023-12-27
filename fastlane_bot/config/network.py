@@ -343,9 +343,7 @@ class ConfigNetwork(ConfigBase):
             df=self.network_df, fork_name=S.SOLIDLY
         )
         self.SOLIDLY_FEE_MAPPING = get_fee_map(df=self.network_df, fork_name=S.SOLIDLY)
-        self.UNI_V2_FORKS = [key for key in self.UNI_V2_ROUTER_MAPPING.keys()] + [
-            "uniswap_v2"
-        ]
+        self.UNI_V2_FORKS = [key for key in self.UNI_V2_ROUTER_MAPPING.keys()]
         self.UNI_V3_FORKS = [key for key in self.UNI_V3_ROUTER_MAPPING.keys()]
         self.SOLIDLY_V2_FORKS = [key for key in self.SOLIDLY_ROUTER_MAPPING.keys()]
         self.CARBON_CONTROLLER_MAPPING = get_fork_map(
@@ -599,8 +597,8 @@ class _ConfigNetworkBase(ConfigNetwork):
     BALANCER_VAULT_ADDRESS = "0xBA12222222228d8Ba445958a75a0704d566BF2C8"
 
     CHAIN_FLASHLOAN_TOKENS = {
-        "WETH-0006": "0x4200000000000000000000000000000000000006",
-        "USDC-2913": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "WETH": "0x4200000000000000000000000000000000000006",
+        "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     }
     # Add any exchanges unique to the chain here
     CHAIN_SPECIFIC_EXCHANGES = []
@@ -610,9 +608,12 @@ class _ConfigNetworkFantom(ConfigNetwork):
     Fastlane bot config -- network [Fantom]
     """
 
+    NETWORK = S.NETWORK_FANTOM
     NETWORK_ID = "250"
     NETWORK_NAME = "fantom"
+    DEFAULT_PROVIDER = S.PROVIDER_ALCHEMY
     RPC_ENDPOINT = os.environ.get("WEB3_FANTOM")
+    WEB3_ALCHEMY_PROJECT_ID = ""
 
     network_df = get_multichain_addresses(network="fantom")
     FASTLANE_CONTRACT_ADDRESS = "0x418Cf3B67F1bF7ffe3eA0B58cEfb98c7a7C86f47"
@@ -635,9 +636,11 @@ class _ConfigNetworkFantom(ConfigNetwork):
     BALANCER_VAULT_ADDRESS = "0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce"
 
     CHAIN_FLASHLOAN_TOKENS = {
-        "WFTM-4C83": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
-        "axlUSDC-34a4": "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4",
+        "WFTM": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+        "axlUSDC": "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4",
     }
+    # Add any exchanges unique to the chain here
+    CHAIN_SPECIFIC_EXCHANGES = []
 
 
 class _ConfigNetworkTenderly(ConfigNetwork):

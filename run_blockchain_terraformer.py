@@ -1315,4 +1315,4 @@ def terraform_blockchain(
     return univ2_mapdf, univ3_mapdf
 
 
-terraform_blockchain(network_name="fantom", save_tokens=True)
+# terraform_blockchain(network_name="fantom", save_tokens=True)
