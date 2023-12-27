@@ -218,7 +218,7 @@ load_dotenv()
 )
 @click.option(
     "--blockchain",
-    default="ethereum",
+    default="fantom",
     help="""A blockchain from the list. Blockchains not in this list do not have a deployed Fast Lane contract and 
     are not supported.""",
     type=click.Choice(["ethereum", "coinbase_base", "fantom"]),
