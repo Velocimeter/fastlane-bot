@@ -359,7 +359,7 @@ class TxHelpers:
             test_fake_gas=True if result is not None else False,
             flashloan_struct=flashloan_struct,
         )
-        self.ConfigObj.logger.info(f"Arbitrage transaction: {arb_tx}")
+
         if result == self.XS_TRANSACTION:
             return arb_tx
 
