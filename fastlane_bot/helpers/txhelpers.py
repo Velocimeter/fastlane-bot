@@ -630,6 +630,7 @@ class TxHelpers:
                         f"Error when building transaction, this is expected to happen occasionally, discarding. Exception: {e.__class__.__name__} {e}"
                     )
             else:
+                print(f"\n************* 2 FAILED TRANSACTION DETAILS *************:\nerror: {str(e)}\n{flashloan_struct}\n{routes}\ngas_price={gas_price}\nmax_priority={max_priority}")
                 self.ConfigObj.logger.warning(
                     f"[helpers.txhelpers.build_transaction_with_gas] (***2***) \n"
                     f"Error when building transaction, this is expected to happen occasionally, discarding. Exception: {e.__class__.__name__} {e}"
