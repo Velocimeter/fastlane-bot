@@ -95,7 +95,6 @@ load_dotenv()
             "multi_triangle",
             "b3_two_hop",
             "multi_pairwise_pol",
-            "multi_pairwise_bal",
             "multi_pairwise_all",
         ]
     ),
@@ -104,8 +103,8 @@ load_dotenv()
     "--flashloan_tokens",
     default=f"{T.BASE_WETH},{T.BASE_USDC}",
     type=str,
-    help="The --flashloan_tokens flag refers to those token denominations which the bot can take a flash loan in. By "
-    "default, these are [WETH, DAI, USDC, USDT, WBTC, BNT, NATIVE_ETH]. If you override the default to TKN, "
+    help="The --flashloan_tokens flag refers to those token denominations which the bot can take a flash loan in."
+    "If you override the default, "
     "the search space is decreased for all modes, including the b3_two_hop mode (assuming that "
     "--limit_bancor3_flashloan_tokens=True).",
 )
@@ -117,7 +116,7 @@ load_dotenv()
 )
 @click.option(
     "--polling_interval",
-    default=12,
+    default=1,
     help="Polling interval in seconds",
 )
 @click.option(
@@ -127,7 +126,7 @@ load_dotenv()
 )
 @click.option(
     "--reorg_delay",
-    default=2,
+    default=0,
     help="Number of blocks delayed to avoid reorgs",
 )
 @click.option(
