@@ -436,7 +436,7 @@ def main(
             pool_data_update_frequency: {pool_data_update_frequency}
             prefix_path: {prefix_path}
             version_check_frequency: {version_check_frequency}
-            use_flashloans: {self_fund}
+            self_fund: {self_fund}
             read_only: {read_only}
 
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -460,6 +460,7 @@ def main(
         tokens,
         uniswap_v2_event_mappings,
         uniswap_v3_event_mappings,
+        solidly_v2_event_mappings,
     ) = get_static_data(
         cfg,
         exchanges,
@@ -494,13 +495,14 @@ def main(
         alchemy_max_block_fetch=alchemy_max_block_fetch,
         uniswap_v2_event_mappings=uniswap_v2_event_mappings,
         uniswap_v3_event_mappings=uniswap_v3_event_mappings,
+        solidly_v2_event_mappings=solidly_v2_event_mappings,
         tokens=tokens.to_dict(orient="records"),
         replay_from_block=replay_from_block,
         target_tokens=target_token_addresses,
         tenderly_fork_id=tenderly_fork_id,
         tenderly_event_exchanges=tenderly_event_exchanges,
         w3_tenderly=w3_tenderly,
-        forked_exchanges=cfg.UNI_V2_FORKS + cfg.UNI_V3_FORKS,
+        forked_exchanges=cfg.UNI_V2_FORKS + cfg.UNI_V3_FORKS + cfg.SOLIDLY_V2_FORKS,
         blockchain=blockchain,
         prefix_path=prefix_path,
         read_only=read_only,
@@ -662,7 +664,6 @@ def run(
                     logging_path,
                 )
             )
-
             iteration_start_time = time.time()
 
             # Update the pools from the latest events
@@ -819,8 +820,10 @@ def run(
                     else None
                 )
                 (
+                    exchange_df,
                     uniswap_v2_event_mappings,
                     uniswap_v3_event_mappings,
+                    solidly_v2_event_mappings,
                 ) = terraform_blockchain(
                     network_name=blockchain,
                     web3=mgr.web3,
@@ -832,14 +835,17 @@ def run(
                 mgr.uniswap_v3_event_mappings = dict(
                     uniswap_v3_event_mappings[["address", "exchange"]].values
                 )
-                last_block_queried = current_block
-
-                total_iteration_time += time.time() - iteration_start_time
-                mgr.cfg.logger.info(
-                    f"\n\n********************************************\n"
-                    f"Average Total iteration time for loop {loop_idx}: {total_iteration_time / loop_idx}"
-                    f"\n********************************************\n\n"
+                mgr.solidly_v2_event_mappings = dict(
+                    solidly_v2_event_mappings[["address", "exchange"]].values
                 )
+            last_block_queried = current_block
+
+            total_iteration_time += time.time() - iteration_start_time
+            mgr.cfg.logger.info(
+                f"\n\n********************************************\n"
+                f"Average Total iteration time for loop {loop_idx}: {total_iteration_time / loop_idx}"
+                f"\n********************************************\n\n"
+            )
 
         except Exception as e:
             mgr.cfg.logger.error(f"Error in main loop: {e}")
