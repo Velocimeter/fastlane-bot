@@ -5,6 +5,7 @@ This is the main file for configuring the bot and running the fastlane bot.
 (c) Copyright Bprotocol foundation 2023.
 Licensed under MIT
 """
+from fastlane_bot.events.exceptions import ReadOnlyException
 from fastlane_bot.events.version_utils import check_version_requirements
 from fastlane_bot.tools.cpc import T
 
@@ -95,7 +96,6 @@ load_dotenv()
             "multi_triangle",
             "b3_two_hop",
             "multi_pairwise_pol",
-            "multi_pairwise_bal",
             "multi_pairwise_all",
         ]
     ),
@@ -104,8 +104,8 @@ load_dotenv()
     "--flashloan_tokens",
     default=f"{T.WFTM}",
     type=str,
-    help="The --flashloan_tokens flag refers to those token denominations which the bot can take a flash loan in. By "
-    "default, these are [WETH, DAI, USDC, USDT, WBTC, BNT, NATIVE_ETH]. If you override the default to TKN, "
+    help="The --flashloan_tokens flag refers to those token denominations which the bot can take a flash loan in."
+    "If you override the default, "
     "the search space is decreased for all modes, including the b3_two_hop mode (assuming that "
     "--limit_bancor3_flashloan_tokens=True).",
 )
@@ -117,7 +117,7 @@ load_dotenv()
 )
 @click.option(
     "--polling_interval",
-    default=12,
+    default=1,
     help="Polling interval in seconds",
 )
 @click.option(
@@ -127,7 +127,7 @@ load_dotenv()
 )
 @click.option(
     "--reorg_delay",
-    default=2,
+    default=0,
     help="Number of blocks delayed to avoid reorgs",
 )
 @click.option(
@@ -253,7 +253,13 @@ load_dotenv()
     type=bool,
     help="If True, the bot will attempt to submit arbitrage transactions using funds in your wallet when possible.",
 )
-
+@click.option(
+    "--read_only",
+    default=True,
+    type=bool,
+    help="If True, the bot will skip all operations which write to disk. Use this flag if you're running the bot in "
+         "an environment with restricted write permissions.",
+)
 def main(
     cache_latest_only: bool,
     backdate_pools: bool,
@@ -285,6 +291,7 @@ def main(
     prefix_path: str,
     version_check_frequency: int,
     self_fund: bool,
+    read_only: bool,
 ):
     """
     The main entry point of the program. It sets up the configuration, initializes the web3 and Base objects,
@@ -321,6 +328,8 @@ def main(
         prefix_path (str): prefixes the path to the write folders (used for deployment)
         version_check_frequency (int): how frequently the bot should check the version of the arb contract. 1 = every loop
         self_fund (bool): If False, the bot will use Flashloans to fund arbitrage trades. If True, the bot will use funds in the wallet to perform arbitrage trades.
+        read_only (bool): If True, the bot will skip all operations which write to disk. Use this flag if you're running the bot in an environment with restricted write permissions.
+
     """
 
     if replay_from_block or tenderly_fork_id:
@@ -344,11 +353,15 @@ def main(
     )
     base_path = os.path.normpath(f"fastlane_bot/data/blockchain_data/{blockchain}/")
     tokens_filepath = os.path.join(base_path, "tokens.csv")
-    if not os.path.exists(tokens_filepath):
+
+    if not os.path.exists(tokens_filepath) and not read_only:
         df = pd.DataFrame(
             columns=["address", "decimals"]
         )
         df.to_csv(tokens_filepath)
+    elif not os.path.exists(tokens_filepath) and read_only:
+        raise ReadOnlyException(tokens_filepath)
+
     tokens = read_csv_file(tokens_filepath)
 
     cfg.logger.info(f"tokens: {len(tokens)}, {tokens['address'].tolist()[0]}")
@@ -424,6 +437,7 @@ def main(
             prefix_path: {prefix_path}
             version_check_frequency: {version_check_frequency}
             use_flashloans: {self_fund}
+            read_only: {read_only}
 
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -451,6 +465,7 @@ def main(
         exchanges,
         blockchain,
         static_pool_data_filename,
+        read_only
     )
 
     target_token_addresses = handle_target_token_addresses(
@@ -488,6 +503,7 @@ def main(
         forked_exchanges=cfg.UNI_V2_FORKS + cfg.UNI_V3_FORKS,
         blockchain=blockchain,
         prefix_path=prefix_path,
+        read_only=read_only,
     )
 
     # Add initial pool data to the manager
@@ -685,13 +701,14 @@ def run(
             # Update the last block number
             last_block = current_block
 
-            # Write the pool data to disk
-            write_pool_data_to_disk(
-                cache_latest_only=cache_latest_only,
-                logging_path=logging_path,
-                mgr=mgr,
-                current_block=current_block,
-            )
+            if not mgr.read_only:
+                # Write the pool data to disk
+                write_pool_data_to_disk(
+                    cache_latest_only=cache_latest_only,
+                    logging_path=logging_path,
+                    mgr=mgr,
+                    current_block=current_block,
+                )
 
             # Handle/remove duplicates in the pool data
             handle_duplicates(mgr)
@@ -716,7 +733,8 @@ def run(
                     f"[main] Using only tokens in: {use_specific_exchange_for_target_tokens}, found {len(target_tokens)} tokens"
                 )
 
-            handle_tokens_csv(mgr, mgr.prefix_path)
+            if not mgr.read_only:
+                handle_tokens_csv(mgr, mgr.prefix_path)
 
             # Handle subsequent iterations
             handle_subsequent_iterations(
