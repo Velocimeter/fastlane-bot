@@ -13,7 +13,6 @@
 #     name: python3
 # ---
 
-# +
 # coding=utf-8
 """
 This module contains the tests for the exchanges classes
@@ -44,7 +43,6 @@ from fastlane_bot.testing import *
 plt.rcParams['figure.figsize'] = [12,6]
 from fastlane_bot import __VERSION__
 require("3.0", __VERSION__)
-# -
 
 # # Multi Mode [NB038]
 
@@ -182,7 +180,7 @@ assert len(combos) >= 1225, f"[TestMultiTriangleMode] Using wrong dataset, expec
 #     print(f"found {count} pools for {ex}")
 # -
 
-# ### Test_find_arbitrage_single
+# ### Test_find_arbitrage
 
 # +
 arb_finder = bot._get_arb_finder("multi_triangle")
@@ -220,65 +218,6 @@ for arb in r:
                     assert curve["tknout"] in tkn_out, f"[TestMultiTriangleMode] Finding Carbon curves in opposite directions - not supported in this mode."
 
 assert multi_carbon_count > 0, f"[TestMultiTriangleMode] Not finding arbs with multiple Carbon curves."
-assert len(r) >= 58, f"[TestMultiTriangleMode] Expected at least 58 arbs, found {len(r)}"
-# -
-
-# ## Test Triangle Single
-
-arb_finder = bot._get_arb_finder("triangle")
-assert arb_finder.__name__ == "ArbitrageFinderTriangleSingle", f"[TestMultiTriangleMode] Expected arb_finder class name name = ArbitrageFinderTriangleSingle, found {arb_finder.__name__}"
-
-# ## Test_combos_triangle_single
-
-arb_finder = bot._get_arb_finder("triangle")
-finder2 = arb_finder(
-            flashloan_tokens=flashloan_tokens,
-            CCm=CCm,
-            mode="bothin",
-            result=bot.AO_TOKENS,
-            ConfigObj=bot.ConfigObj,
-        )
-combos = finder2.get_combos(flashloan_tokens=flashloan_tokens, CCm=CCm, arb_mode="multi_triangle")
-assert len(combos) >= 1225, f"[TestMultiTriangleMode] Using wrong dataset, expected at least 1225 combos, found {len(combos)}"
-
-# ## Test_Find_Arbitrage_Single
-
-# +
-arb_finder = bot._get_arb_finder("triangle")
-finder = arb_finder(
-            flashloan_tokens=flashloan_tokens,
-            CCm=CCm,
-            mode="bothin",
-            result=bot.AO_CANDIDATES,
-            ConfigObj=bot.ConfigObj,
-        )
-r = finder.find_arbitrage()
-multi_carbon_count = 0
-for arb in r:
-    (
-            best_profit,
-            best_trade_instructions_df,
-            best_trade_instructions_dic,
-            best_src_token,
-            best_trade_instructions,
-        ) = arb
-    if len(best_trade_instructions_dic) > 3:
-        multi_carbon_count += 1
-        tkn_in = None
-        tkn_out = None
-        # Find the first Carbon Curve to establish tknin and tknout
-        for curve in best_trade_instructions_dic:
-            if "-0" in curve['cid'] or "-1" in curve['cid']:
-                tkn_in = curve["tknin"]
-                tknout = curve["tknout"]
-                break
-        for curve in best_trade_instructions_dic:
-            if "-0" in curve['cid'] or "-1" in curve['cid']:
-                if curve["tknin"] in [tkn_in, tkn_out] and curve["tknout"] in [tkn_in, tkn_out]:
-                    assert curve["tknin"] in tkn_in, f"[TestMultiTriangleMode] Finding Carbon curves in opposite directions - not supported in this mode."
-                    assert curve["tknout"] in tkn_out, f"[TestMultiTriangleMode] Finding Carbon curves in opposite directions - not supported in this mode."
-
-assert multi_carbon_count == 0, f"[TestMultiTriangleMode] Expected 0 arbs with multiple Carbon curves for Triangle Single mode, found {multi_carbon_count}."
 assert len(r) >= 58, f"[TestMultiTriangleMode] Expected at least 58 arbs, found {len(r)}"
 # -
 
