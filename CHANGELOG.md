@@ -2,7 +2,72 @@
 
 ## [Unreleased](https://github.com/bancorprotocol/fastlane-bot/tree/HEAD)
 
-[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.3...HEAD)
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.13...HEAD)
+
+- Bancor V2 ETH pool has wrong Anchor address [\#309](https://github.com/bancorprotocol/fastlane-bot/issues/309)
+- Update static\_pool\_data.csv [\#310](https://github.com/bancorprotocol/fastlane-bot/pull/310) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+## [v3.0.13](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.13) (2024-01-16)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.12...v3.0.13)
+
+- Add eval back due to bug [\#305](https://github.com/bancorprotocol/fastlane-bot/pull/305) ([mikewcasale](https://github.com/mikewcasale))
+
+## [v3.0.12](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.12) (2024-01-14)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.11...v3.0.12)
+
+- Update uniswap\_v3\_event\_mappings.csv [\#298](https://github.com/bancorprotocol/fastlane-bot/pull/298) ([mikewcasale](https://github.com/mikewcasale))
+
+## [v3.0.11](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.11) (2024-01-14)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.10...v3.0.11)
+
+- Hex string without 0x prefix [\#287](https://github.com/bancorprotocol/fastlane-bot/issues/287)
+- Bugfixes for production environment [\#297](https://github.com/bancorprotocol/fastlane-bot/pull/297) ([mikewcasale](https://github.com/mikewcasale))
+
+- Add read-only setting [\#288](https://github.com/bancorprotocol/fastlane-bot/issues/288)
+
+## [v3.0.10](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.10) (2024-01-11)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.9...v3.0.10)
+
+- Add Test Coverage: Arb Modes [\#281](https://github.com/bancorprotocol/fastlane-bot/issues/281)
+- 288 add read only setting [\#290](https://github.com/bancorprotocol/fastlane-bot/pull/290) ([mikewcasale](https://github.com/mikewcasale))
+
+## [v3.0.9](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.9) (2024-01-08)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.8...v3.0.9)
+
+- Incorrect fee for sushiswap v2 ethereum in multichain\_addresses.csv [\#283](https://github.com/bancorprotocol/fastlane-bot/issues/283)
+
+- 281 add test coverage arb modes [\#286](https://github.com/bancorprotocol/fastlane-bot/pull/286) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+## [v3.0.8](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.8) (2024-01-05)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.7...v3.0.8)
+
+- 283 incorrect fee for sushiswap v2 ethereum in multichain addressescsv [\#284](https://github.com/bancorprotocol/fastlane-bot/pull/284) ([Lesigh-3100](https://github.com/Lesigh-3100))
+
+## [v3.0.7](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.7) (2024-01-01)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.6...v3.0.7)
+
+Merged pull requests
+
+- Create FAQ.md [\#273](https://github.com/bancorprotocol/fastlane-bot/pull/273) ([zavelevsky](https://github.com/zavelevsky))
+
+## [v3.0.6](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.6) (2023-12-28)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.5...v3.0.6)
+
+Merged pull requests
+
+- update default click params [\#278](https://github.com/bancorprotocol/fastlane-bot/pull/278) ([mikewcasale](https://github.com/mikewcasale))
+
+## [v3.0.5](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.5) (2023-12-25)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.4...v3.0.5)
 
 - minor spelling issue txhelpers \(coinbase\_bse\) [\#269](https://github.com/bancorprotocol/fastlane-bot/issues/269)
 - Bug in POL Mode & Carbon Curve creation [\#266](https://github.com/bancorprotocol/fastlane-bot/issues/266)

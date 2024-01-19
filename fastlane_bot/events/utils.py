@@ -242,7 +242,8 @@ def get_static_data(
     exchanges: List[str],
     blockchain: str,
     static_pool_data_filename: str,
-) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, str], Dict[str, str]]:
+    read_only: bool = False,
+) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, str], Dict[str, str], Dict[str, str]]:
     """
     Helper function to get static pool data, tokens, and Uniswap v2 event mappings.
 
@@ -285,6 +286,12 @@ def get_static_data(
     uniswap_v3_event_mappings_df = read_csv_file(uniswap_v3_filepath)
     uniswap_v3_event_mappings = dict(
         uniswap_v3_event_mappings_df[["address", "exchange"]].values
+    )
+    # Read Solidly v2 event mappings and tokens
+    solidly_v2_filepath = os.path.join(base_path, "solidly_v2_event_mappings.csv")
+    solidly_v2_event_mappings_df = read_csv_file(solidly_v2_filepath)
+    solidly_v2_event_mappings = dict(
+        solidly_v2_event_mappings_df[["address", "exchange"]].values
     )
 
     tokens_filepath = os.path.join(base_path, "tokens.csv")
@@ -363,6 +370,7 @@ def get_static_data(
         tokens,
         uniswap_v2_event_mappings,
         uniswap_v3_event_mappings,
+        solidly_v2_event_mappings,
     )
 
 
@@ -1263,7 +1271,6 @@ def get_latest_events(
 
     # Filter out the latest events per pool, save them to disk, and update the pools
     latest_events = filter_latest_events(mgr, events)
-
     if mgr.tenderly_fork_id:
         if tenderly_events:
             latest_tenderly_events = filter_latest_events(mgr, tenderly_events)
@@ -1332,21 +1339,27 @@ def get_start_block(
         ), replay_from_block
     elif mgr.tenderly_fork_id:
         # connect to the Tenderly fork and get the latest block number
-        from_block = mgr.w3_tenderly.eth.block_number
-        return (
+        current_block = mgr.w3_tenderly.eth.block_number
+        from_block = (
             max(block["last_updated_block"] for block in mgr.pool_data) - reorg_delay
             if last_block != 0
-            else from_block - reorg_delay - alchemy_max_block_fetch
-        ), from_block
+            else current_block - reorg_delay - alchemy_max_block_fetch
+        )
+        if (current_block - from_block) > 2000:
+            from_block = current_block - 2000
+        return from_block, current_block
     else:
         current_block = mgr.web3.eth.block_number
+        from_block = (
+            max(block["last_updated_block"] for block in mgr.pool_data)
+            - reorg_delay
+            if last_block != 0
+            else current_block - reorg_delay - alchemy_max_block_fetch
+        )
+        if (current_block - from_block) > 2000:
+            from_block = current_block - 2000
         return (
-            (
-                max(block["last_updated_block"] for block in mgr.pool_data)
-                - reorg_delay
-                if last_block != 0
-                else current_block - reorg_delay - alchemy_max_block_fetch
-            ),
+            from_block,
             None,
         )
 
@@ -1904,11 +1917,24 @@ def handle_static_pools_update(mgr: Any):
             for k, v in mgr.uniswap_v3_event_mappings.items()
         ]
     )
+    solidly_v2_event_mappings = pd.DataFrame(
+        [
+            {"address": k, "exchange_name": v}
+            for k, v in mgr.solidly_v2_event_mappings.items()
+        ]
+    )
     all_event_mappings = (
-        pd.concat([uniswap_v2_event_mappings, uniswap_v3_event_mappings])
+        pd.concat([uniswap_v2_event_mappings, uniswap_v3_event_mappings, solidly_v2_event_mappings])
         .drop_duplicates("address")
         .to_dict(orient="records")
     )
+    if "uniswap_v2_pools" not in mgr.static_pools:
+        mgr.static_pools["uniswap_v2_pools"] = []
+    if "uniswap_v3_pools" not in mgr.static_pools:
+        mgr.static_pools["uniswap_v3_pools"] = []
+    if "solidly_v2_pools" not in mgr.static_pools:
+        mgr.static_pools["solidly_v2_pools"] = []
+
     for ex in mgr.forked_exchanges:
         if ex in mgr.exchanges:
             exchange_pools = [
