@@ -2,7 +2,27 @@
 
 ## [Unreleased](https://github.com/bancorprotocol/fastlane-bot/tree/HEAD)
 
-[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.16...HEAD)
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.18...HEAD)
+
+- Production monitoring spreadsheet [\#275](https://github.com/bancorprotocol/fastlane-bot/issues/275)
+
+Merged pull requests
+
+- Log the entire stack-trace upon main-loop exceptions [\#318](https://github.com/bancorprotocol/fastlane-bot/pull/318) ([barakman](https://github.com/barakman))
+- Log all non-integer block numbers in function `get_start_block` [\#316](https://github.com/bancorprotocol/fastlane-bot/pull/316) ([barakman](https://github.com/barakman))
+- Improve the handling of the error-message returned from the node [\#304](https://github.com/bancorprotocol/fastlane-bot/pull/304) ([barakman](https://github.com/barakman))
+
+## [v3.0.18](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.18) (2024-01-18)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.17...v3.0.18)
+
+Merged pull requests
+
+- Solidly Analytics [\#315](https://github.com/bancorprotocol/fastlane-bot/pull/315) ([sklbancor](https://github.com/sklbancor))
+
+## [v3.0.17](https://github.com/bancorprotocol/fastlane-bot/tree/v3.0.17) (2024-01-17)
+
+[Full Changelog](https://github.com/bancorprotocol/fastlane-bot/compare/v3.0.16...v3.0.17)
 
 Merged pull requests
 
