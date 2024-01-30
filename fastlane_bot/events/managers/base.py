@@ -134,7 +134,7 @@ class BaseManager:
         Handles getting stable & volatile fees for Solidly forks
         """
         exchange_name = exchange.exchange_name
-        self.factory_contracts[exchange_name] = self.web3.eth.contract(
+        self.factory_contracts[exchange_name] = self.w3_async.eth.contract(
             address=self.cfg.FACTORY_MAPPING[exchange_name],
             abi=exchange.get_factory_abi,
         )
