@@ -139,7 +139,6 @@ class BaseManager:
             abi=exchange.get_factory_abi,
         )
         exchange.factory_contract = self.factory_contracts[exchange.exchange_name]
-        #exchange.set_stable_volatile_fee()
 
         return exchange
 
