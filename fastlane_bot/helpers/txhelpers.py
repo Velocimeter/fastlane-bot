@@ -995,6 +995,12 @@ class TxHelpers:
         """
         return asyncio.get_event_loop().run_until_complete(self._get_layer_one_gas_fee(signed_transaction=signed_transaction))
 
+    async def _get_l1_base_fee(self):
+        return self.ConfigObj.GAS_ORACLE_CONTRACT.caller.basefee()
+    async def _get_l1_fee_overhead(self):
+        return self.ConfigObj.GAS_ORACLE_CONTRACT.caller.l1FeeOverhead()
+    async def _get_l1_fee_scalar(self):
+        return self.ConfigObj.GAS_ORACLE_CONTRACT.caller.l1FeeScalar()
     async def _get_layer_one_gas_fee(self, signed_transaction) -> Decimal:
         """
         Returns the expected layer one gas fee for a layer 2 Optimism transaction
@@ -1003,14 +1009,14 @@ class TxHelpers:
         returns: Decimal
             The total fee (in gas token) for the l1 gas fee
         """
-        ethereum_base_fee = await self.ConfigObj.GAS_ORACLE_CONTRACT.caller.basefee()
-        fixed_overhead = await self.ConfigObj.GAS_ORACLE_CONTRACT.caller.l1FeeOverhead()
-        dynamic_overhead = await self.ConfigObj.GAS_ORACLE_CONTRACT.caller.l1FeeScalar()
+        ethereum_base_fee = await self._get_l1_base_fee()
+        fixed_overhead = await self._get_l1_fee_overhead()
+        dynamic_overhead = await self._get_l1_fee_scalar()
         zero_bytes, non_zero_bytes = count_bytes(signed_transaction["rawTransaction"])
         tx_data_gas = zero_bytes * 4 + non_zero_bytes * 16
         tx_total_gas = (tx_data_gas + fixed_overhead) * dynamic_overhead
         l1_data_fee = tx_total_gas * ethereum_base_fee
-        ## Dividing by 10 ** 24 because dynamic_overhead is returned in PPM format, and to convert this from WEI format to decimal format (10 ** 18).
+        ## Dividing by 10  24 because dynamic_overhead is returned in PPM format, and to convert this from WEI format to decimal format (10  18).
         return Decimal(f"{l1_data_fee}e-24")
 
 
