@@ -758,7 +758,7 @@ class TxHelpers:
         self.ConfigObj.logger.info(
             f"[helpers.txhelpers.submit_transaction] Attempting to submit tx {signed_arb_tx}"
         )
-        tx = self.web3.eth.send_raw_transaction(signed_arb_tx.rawTransaction)
+        tx = self.web3.eth.send_raw_transaction(signed_arb_tx)
         tx_hash = self.web3.to_hex(tx)
 
         try:
